@@ -54,5 +54,16 @@ class CategoryController {
             return res.status(500).json(error.message)
         }
     }
+    static async getCategoryActived(req, res) {
+        try {
+            const productCategoryActived = await database.Categories.findAll({
+                where: { ativo: true, },
+                include: { model: database.Products, where: { preco: { [database.Sequelize.Op.gt]: 10, }, }, },
+            });
+            return res.status(200).json(productCategoryActived);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
 }
 module.exports = CategoryController
